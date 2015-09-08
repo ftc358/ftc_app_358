@@ -34,7 +34,6 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
 
 /**
  * TeleOp Mode
@@ -198,6 +197,7 @@ public class K9TeleOp extends OpMode {
         telemetry.addData("Text", "*** Robot Data***");
         telemetry.addData("arm", "arm:  " + String.format("%.2f", armPosition));
         telemetry.addData("claw", "claw:  " + String.format("%.2f", clawPosition));
+        telemetry.addData("joystick raw","left: "+String.format("%.2f",throttleL)+"right: "+String.format("%.2f",throttleR));
         telemetry.addData("left tgt pwr",  "left  pwr: " + String.format("%.2f", left));
         telemetry.addData("right tgt pwr", "right pwr: " + String.format("%.2f", right));
 
@@ -214,7 +214,7 @@ public class K9TeleOp extends OpMode {
 	}
 	
 	/*
-	 * This method scales the joystick input so for low joystick values, the 
+	 * This method scales the joystick input so for low joystick values, the
 	 * scaled value is less than linear.  This is to make it easier to drive
 	 * the robot more precisely at slower speeds.
 	 */
