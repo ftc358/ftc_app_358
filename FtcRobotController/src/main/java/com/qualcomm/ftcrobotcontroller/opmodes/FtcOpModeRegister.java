@@ -83,6 +83,10 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register("K9IrSeeker", K9IrSeeker.class);
     manager.register("K9Line", K9Line.class);
 
+    ////////////////////////////////////////////////////////
+    manager.register("TeleOpProtoMk1", TeleOpProtoMk1.class);
+    ////////////////////////////////////////////////////////
+
     /*
      * The following example op modes are designed to work with a pushbot-style robot.
      *  - PushBotManual is a driver controled (tank drive) op mode.
