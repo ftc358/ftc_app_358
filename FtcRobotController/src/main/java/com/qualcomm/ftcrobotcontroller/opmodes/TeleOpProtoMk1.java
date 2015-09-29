@@ -52,7 +52,7 @@ public class TeleOpProtoMk1 extends OpMode {
 	DcMotor motorLF;
 	DcMotor motorLB;
 	DcMotor motorRF;
-	//DcMotor motorRB;
+	DcMotor motorRB;
 
 	/**
 	 * Constructor
@@ -90,9 +90,9 @@ public class TeleOpProtoMk1 extends OpMode {
 		motorLF = hardwareMap.dcMotor.get("motor_1");
 		motorRF = hardwareMap.dcMotor.get("motor_2");
         motorLB = hardwareMap.dcMotor.get("motor_3");
-        //motorRB = hardwareMap.dcMotor.get("motor_4");
+        motorRB = hardwareMap.dcMotor.get("motor_4");
 		motorRF.setDirection(DcMotor.Direction.REVERSE);
-        //motorRB.setDirection(DcMotor.Direction.REVERSE);
+        motorRB.setDirection(DcMotor.Direction.REVERSE);
 	}
 
 	/*
@@ -125,6 +125,7 @@ public class TeleOpProtoMk1 extends OpMode {
         motorLF.setPower(left);
         motorLB.setPower(left);
 		motorRF.setPower(right);
+		motorRB.setPower(right);
         //motorRB.setPower(throttleR);
 
 		// clip the right/left values so that the values never exceed +/- 1
