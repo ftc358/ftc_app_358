@@ -61,7 +61,7 @@ import com.qualcomm.ftccommon.LaunchActivityConstantsList;
 import com.qualcomm.ftccommon.Restarter;
 import com.qualcomm.ftccommon.UpdateUI;
 import com.qualcomm.ftcrobotcontroller.opmodes.FtcOpModeRegister;
-import com.qualcomm.modernrobotics.ModernRoboticsHardwareFactory;
+import com.qualcomm.hardware.ModernRoboticsHardwareFactory;
 import com.qualcomm.robotcore.hardware.HardwareFactory;
 import com.qualcomm.robotcore.hardware.configuration.Utility;
 import com.qualcomm.robotcore.util.Dimmer;
@@ -89,7 +89,6 @@ public class FtcRobotControllerActivity extends Activity {
   protected ImageButton buttonMenu;
 
   protected TextView textDeviceName;
-  TextView joysticks;
   protected TextView textWifiDirectStatus;
   protected TextView textRobotStatus;
   protected TextView[] textGamepad = new TextView[NUM_GAMEPADS];
@@ -137,15 +136,12 @@ public class FtcRobotControllerActivity extends Activity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-      super.onCreate(savedInstanceState);
+    super.onCreate(savedInstanceState);
 
     setContentView(R.layout.activity_ftc_controller);
 
     utility = new Utility(this);
     context = this;
-
-    joysticks = (TextView) findViewById(R.id.gamepads);
-
     entireScreenLayout = (LinearLayout) findViewById(R.id.entire_screen);
     buttonMenu = (ImageButton) findViewById(R.id.menu_buttons);
     buttonMenu.setOnClickListener(new View.OnClickListener() {

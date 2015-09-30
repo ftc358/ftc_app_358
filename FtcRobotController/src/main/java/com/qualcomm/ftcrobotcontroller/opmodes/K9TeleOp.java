@@ -34,6 +34,7 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
 
 /**
  * TeleOp Mode
@@ -78,9 +79,9 @@ public class K9TeleOp extends OpMode {
 	}
 
 	/*
-	 * Code to run when the op mode is initialized goes here
+	 * Code to run when the op mode is first enabled goes here
 	 * 
-	 * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#init()
+	 * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#start()
 	 */
 	@Override
 	public void init() {
@@ -104,10 +105,10 @@ public class K9TeleOp extends OpMode {
 		 */
 		motorRight = hardwareMap.dcMotor.get("motor_2");
 		motorLeft = hardwareMap.dcMotor.get("motor_1");
-		motorRight.setDirection(DcMotor.Direction.REVERSE);
+		motorLeft.setDirection(DcMotor.Direction.REVERSE);
 		
 		arm = hardwareMap.servo.get("servo_1");
-		//claw = hardwareMap.servo.get("servo_6");
+		claw = hardwareMap.servo.get("servo_6");
 
 		// assign the starting position of the wrist and claw
 		armPosition = 0.2;
@@ -133,24 +134,19 @@ public class K9TeleOp extends OpMode {
 		// 1 is full down
 		// direction: left_stick_x ranges from -1 to 1, where -1 is full left
 		// and 1 is full right
-		//float throttle = -gamepad1.left_stick_y;
-		//float direction = gamepad1.left_stick_x;
-		float right = 0;
-		float left = 0;
-
-		float throttleL = gamepad1.left_stick_y;
-		float throttleR = gamepad1.right_stick_y;
+		float throttle = -gamepad1.left_stick_y;
+		float direction = gamepad1.left_stick_x;
+		float right = throttle - direction;
+		float left = throttle + direction;
 
 		// clip the right/left values so that the values never exceed +/- 1
-		//throttleL = Range.clip(throttleL, -1, 1);
-		//throttleR = Range.clip(throttleR, -1, 1);
+		right = Range.clip(right, -1, 1);
+		left = Range.clip(left, -1, 1);
 
 		// scale the joystick value to make it easier to control
 		// the robot more precisely at slower speeds.
-		//right = (float)scaleInput(right);
-		//left =  (float)scaleInput(left);
-		left = (float)scaleInput(throttleL);
-		right = (float)scaleInput(throttleR);
+		right = (float)scaleInput(right);
+		left =  (float)scaleInput(left);
 		
 		// write the values to the motors
 		motorRight.setPower(right);
@@ -170,7 +166,7 @@ public class K9TeleOp extends OpMode {
 		}
 
 		// update the position of the claw
-		/*if (gamepad1.x) {
+		if (gamepad1.x) {
 			clawPosition += clawDelta;
 		}
 
@@ -184,7 +180,7 @@ public class K9TeleOp extends OpMode {
 
 		// write position values to the wrist and claw servo
 		arm.setPosition(armPosition);
-		claw.setPosition(clawPosition);*/
+		claw.setPosition(clawPosition);
 
 
 
@@ -197,7 +193,6 @@ public class K9TeleOp extends OpMode {
         telemetry.addData("Text", "*** Robot Data***");
         telemetry.addData("arm", "arm:  " + String.format("%.2f", armPosition));
         telemetry.addData("claw", "claw:  " + String.format("%.2f", clawPosition));
-        telemetry.addData("joystick raw","left: "+String.format("%.2f",throttleL)+"right: "+String.format("%.2f",throttleR));
         telemetry.addData("left tgt pwr",  "left  pwr: " + String.format("%.2f", left));
         telemetry.addData("right tgt pwr", "right pwr: " + String.format("%.2f", right));
 
@@ -212,9 +207,10 @@ public class K9TeleOp extends OpMode {
 	public void stop() {
 
 	}
-	
+
+    	
 	/*
-	 * This method scales the joystick input so for low joystick values, the
+	 * This method scales the joystick input so for low joystick values, the 
 	 * scaled value is less than linear.  This is to make it easier to drive
 	 * the robot more precisely at slower speeds.
 	 */
@@ -224,19 +220,26 @@ public class K9TeleOp extends OpMode {
 		
 		// get the corresponding index for the scaleInput array.
 		int index = (int) (dVal * 16.0);
+		
+		// index should be positive.
 		if (index < 0) {
 			index = -index;
-		} else if (index > 16) {
+		}
+
+		// index cannot exceed size of array minus 1.
+		if (index > 16) {
 			index = 16;
 		}
-		
+
+		// get value from the array.
 		double dScale = 0.0;
 		if (dVal < 0) {
 			dScale = -scaleArray[index];
 		} else {
 			dScale = scaleArray[index];
 		}
-		
+
+		// return scaled value.
 		return dScale;
 	}
 
