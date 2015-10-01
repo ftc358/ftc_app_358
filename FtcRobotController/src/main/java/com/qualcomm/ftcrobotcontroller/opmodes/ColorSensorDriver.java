@@ -69,8 +69,8 @@ public class ColorSensorDriver extends LinearOpMode {
         colorSensor = hardwareMap.colorSensor.get("mr");
         break;
     }
-    led = hardwareMap.led.get("led");
-    t = hardwareMap.touchSensor.get("t");
+    //led = hardwareMap.led.get("led");
+    //t = hardwareMap.touchSensor.get("t");
 
     waitForStart();
 
@@ -79,7 +79,7 @@ public class ColorSensorDriver extends LinearOpMode {
     final View relativeLayout = ((Activity) hardwareMap.appContext).findViewById(R.id.RelativeLayout);
     while (opModeIsActive()) {
 
-      enableLed(t.isPressed());
+      //enableLed(t.isPressed());
 
       switch (device) {
         case HITECHNIC_NXT:
@@ -89,9 +89,10 @@ public class ColorSensorDriver extends LinearOpMode {
           Color.RGBToHSV((colorSensor.red() * 255) / 800, (colorSensor.green() * 255) / 800, (colorSensor.blue() * 255) / 800, hsvValues);
           break;
         case MODERN_ROBOTICS_I2C:
-          Color.RGBToHSV(colorSensor.red()*8, colorSensor.green()*8, colorSensor.blue()*8, hsvValues);
+          Color.RGBToHSV(colorSensor.red() * 8, colorSensor.green() * 8, colorSensor.blue() * 8, hsvValues);
           break;
       }
+      enableLed(false);
       telemetry.addData("Clear", colorSensor.alpha());
       telemetry.addData("Red  ", colorSensor.red());
       telemetry.addData("Green", colorSensor.green());
